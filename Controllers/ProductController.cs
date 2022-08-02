@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using GeneralStoreAPI.Data;
+using GeneralStoreAPI.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -13,7 +14,7 @@ namespace GeneralStoreAPI.Controllers
     public class ProductController : Controller
     {
         private GeneralStoreDBContext _db;
-        public ProductController(GeneralStoreContext db)
+        public ProductController(GeneralStoreDBContext db)
         {
             _db = db;
         }
@@ -21,14 +22,14 @@ namespace GeneralStoreAPI.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateProduct(ProductEdit newProduct)
         {
-            ProductController product = new ProductController()
+            Product product = new Product()
             {
                 Name = newProduct.Name,
-                Price = newProduct.price,
+                Price = newProduct.Price,
                 QuantityInStock = newProduct.Quantity,
             };
 
-            _db.Products.Add(products);
+            _db.Products.Add(product);
             await _db.SaveChangesAsync();
             return Ok();
         }
