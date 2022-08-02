@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using GeneralStoreAPI.Data;
+using GeneralStoreAPI.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace GeneralStoreAPI.Controllers
@@ -11,9 +12,22 @@ namespace GeneralStoreAPI.Controllers
    [Route("[controller")]
     public class CustomerController : Controller 
     {
-        private GenrealStoreDBContext _db;
-        public CustomerController(GenrealStoreDBContext db) {
+        private GeneralStoreDBContext _db;
+        public CustomerController(GeneralStoreDBContext db) {
             _db = db;
         }
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> CreateCustomer(CustomerEdit newCustomer) {
+        Customer customer = new Customer()
+        {
+            Name = newCustomer.Name,
+            Email = newCustomer.Email,
+        };
+
+        _db.Customers.Add(customer);
+        await _db.SaveChangesAsync();
+        return Ok();
     }
 }
